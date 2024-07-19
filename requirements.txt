@@ -1,0 +1,5 @@
+asyncio
+json
+discord.py
+logging
+python-dotenv
