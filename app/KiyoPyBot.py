@@ -200,7 +200,7 @@ async def go(ctx):
     logging.info("GO command")
     if ctx.voice_client:
         # 音声ファイルのパス
-        audio_source = discord.FFmpegPCMAudio(executable="ffmpeg", source="/app/loop_music")
+        audio_source = discord.FFmpegPCMAudio(executable="ffmpeg", source="./loop_music.mp3")
         ctx.voice_client.play(audio_source, after=lambda e: print(f'Error: {e}') if e else None)
         await ctx.send("Playing music!")
     else:
