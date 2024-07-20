@@ -1,24 +1,20 @@
-# ベースイメージを指定
+# ベースイメージを設定
 FROM python:3.9-slim
 
-# 作業ディレクトリを作成
+# 作業ディレクトリを設定
 WORKDIR /app
 
-# 依存関係をコピー
-COPY requirements.txt /app/
-COPY runtime.txt /app/
+# 必要な環境変数を設定
+ENV PATH="/opt/venv/bin:$PATH"
 
-# 依存関係をインストール
-RUN python -m venv /opt/venv && \
+# 依存関係をインストールする前に、キャッシュディレクトリをマウント
+RUN --mount=type=cache,target=/root/.cache/pip python -m venv --copies /opt/venv && \
     . /opt/venv/bin/activate && \
     pip install --upgrade pip && \
     pip install -r requirements.txt
 
-# アプリケーションのソースコードをコピー
-COPY . /app/
+# アプリケーションコードをコピー
+COPY . .
 
-# 環境変数を設定
-ENV PATH=/opt/venv/bin:$PATH
-
-# デフォルトのコマンドを指定
-CMD ["python", "app/kiyopybot.py"]
+# メインスクリプトを実行
+CMD ["python", "main.py"]
