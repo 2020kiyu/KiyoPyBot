@@ -24,4 +24,36 @@ async def ping(ctx):
     print(f'Ping')
     await ctx.send("Pong!")
 
+@bot.command()
+async def join(ctx):
+    print("JOIN command")
+    if ctx.author.voice:
+        channel = ctx.author.voice.channel
+        if ctx.voice_client:
+            await ctx.voice_client.move_to(channel)
+        else:
+            await channel.connect()
+    else:
+        await ctx.send("ボイスチャンネルに参加してください。")
+
+@bot.command()
+async def go(ctx):
+    print("GO command")
+    if ctx.voice_client:
+        # 音声ファイルのパス
+        audio_source = discord.FFmpegPCMAudio(executable="ffmpeg", source="./loop_music.mp3")
+        ctx.voice_client.play(audio_source, after=lambda e: print(f'Error: {e}') if e else None)
+        await ctx.send("Playing music!")
+    else:
+        await ctx.send("Bot is not connected to a voice channel.")
+
+@bot.command()
+async def stop(ctx):
+    print("STOP command")
+    if ctx.voice_client:
+        await ctx.voice_client.disconnect()
+        await ctx.send("Stopped and disconnected.")
+    else:
+        await ctx.send("Bot is not in a voice channel.")
+
 bot.run(os.getenv('BOT_TOKEN'))
