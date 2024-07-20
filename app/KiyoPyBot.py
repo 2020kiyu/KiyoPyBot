@@ -1,5 +1,13 @@
+import os
+import asyncio
+import json
 import discord
+import logging
 from discord.ext import commands
+from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
 
 intents = discord.Intents.default()
 intents.messages = True
