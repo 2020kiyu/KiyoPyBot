@@ -8,7 +8,7 @@ WORKDIR /app
 ENV PATH="/opt/venv/bin:$PATH"
 
 # 依存関係をインストールする前に、キャッシュディレクトリをマウント
-RUN --mount=type=cache,target=/root/.cache/pip python -m venv --copies /opt/venv && \
+RUN --mount=type=cache,id=pip-cache,target=/root/.cache/pip python -m venv --copies /opt/venv && \
     . /opt/venv/bin/activate && \
     pip install --upgrade pip && \
     pip install -r requirements.txt
