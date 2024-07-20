@@ -1,1 +1,1 @@
-worker: python -m app.kiyopybot
+worker: python kiyopybot.py
