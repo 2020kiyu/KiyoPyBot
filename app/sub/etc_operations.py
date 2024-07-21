@@ -1,5 +1,6 @@
 # etc_operations.py
 
+import os
 from dotenv import load_dotenv
 from app.sub import level_operations as level
 
