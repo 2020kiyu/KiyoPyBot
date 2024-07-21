@@ -28,7 +28,7 @@ async def on_ready(bot):
     global USER_DICT
     USER_DICT = db.get_all_users()
     # ロール「レベル0」を準備
-    await level.get_roles("レベル0")
+    await level.get_roles(BOT_CHANNEL, "レベル0")
     # ユーザーデータに基づいてロールを付け替え
     guild = BOT_CHANNEL.guild
     for user_id, data in USER_DICT.items():
@@ -55,7 +55,7 @@ async def on_voice(member, before, after):
            # レベルアップ処理を呼び出す
            stay_duration = datetime.now() - join_time
            minutes = int(stay_duration.total_seconds() / 60)
-           await add_xp_and_check_level_up(member.id, minutes * 2)
+           await add_xp_and_check_level_up(BOT_CHANNEL, member.id, minutes * 2)
 
 # ユーザーがメッセージを送信した時
 async def on_message(message):
@@ -64,7 +64,7 @@ async def on_message(message):
     user_id = message.author.id
     xp_to_add = 10
     # レベルアップ処理を呼び出す
-    await level.add_xp_and_check_level_up(user_id, xp_to_add)
+    await level.add_xp_and_check_level_up(BOT_CHANNEL, user_id, xp_to_add)
 
 # 挨拶
 async def hello(ctx):
