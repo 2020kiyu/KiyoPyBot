@@ -37,7 +37,7 @@ async def on_ready():
     await BOT_CHANNEL.send(f'{member.display_name}さんがサーバーに参加しました。レベル0のロールを付与しました。')
 
 # ユーザーのボイスチャンネル入退室
-async def on_voice(member, before, after)
+async def on_voice(member, before, after):
    if member.bot:
        return  # ボット自身の入退室は無視
    if before.channel is None and after.channel is not None:
