@@ -30,9 +30,7 @@ import logging
 from discord.ext import commands
 from datetime import datetime
 from dotenv import load_dotenv
-from app.sub import music_operations as music
-from app.sub import etc_operations as etc
-from app.sub import level_operations as level
+from app.sub import exe_operations as exe
 
 #############################
 # 変数
@@ -59,56 +57,56 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 @bot.event
 async def on_ready():
     logging.info(f'event on_ready [{bot.user.name}]')
-    await etc.on_ready(bot)
+    await exe.on_ready(bot)
 
 # ユーザーのボイスチャンネル入退室
 @bot.event
 async def on_voice_state_update(member, before, after):
     logging.info('event on_voice_state_update')
-    await etc.on_voice(bot, member, before, after)
+    await exe.on_voice(member, before, after)
  
 # ユーザーがメッセージを送信した時のイベント
 @bot.event
 async def on_message(message):
     logging.info('event on_message')
-    await etc.on_message(bot, message)
+    await exe.on_message(message)
     await bot.process_commands(message)
 
 # サーバー参加時にロール「レベル0」を付与
 @bot.event
 async def on_member_join(member):
     logging.info('event on_member_join')
-    await level.set_level0(member)
+    await exe.set_level0(member)
 
 # (hello)挨拶するコマンド
 @bot.command()
 async def hello(ctx):
     logging.info('command hello')
-    await etc.hello(ctx)
+    await exe.hello(ctx)
 
 # (play)ボイスチャンネルに参加してMP3ファイルを再生するコマンド
 @bot.command()
 async def play(ctx):
     logging.info('command play')
-    await music.play(ctx)
+    await exe.play(ctx)
 
 # (stop)ボイスチャンネルを出てMP3ファイルを停止するコマンド
 @bot.command()
 async def stop(ctx):
     logging.info('command stop')
-    await music.stop(ctx)
+    await exe.stop(ctx)
 
 # (stats)現在のXPとレベルを表示するコマンド
 @bot.command()
 async def stats(ctx):
     logging.info('command stats')
-    await etc.stats(ctx)
+    await exe.stats(ctx)
 
 # (ranking)XP取得ランキングを表示するコマンド
 @bot.command()
 async def ranking(ctx):
     logging.info('command ranking')
-    await etc.ranking(ctx)
+    await exe.ranking(ctx)
 
 # 実行
 bot.run(BOT_TOKEN)

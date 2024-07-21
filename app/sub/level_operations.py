@@ -11,11 +11,6 @@ from app.sub import db_operations as db
 #############################
 # 処理
 #############################
-# レベル0」を付与
-async def set_level0(member):
-    next_level_name = "レベル0"
-    await add_roles(member, next_level_name)
-
 # 現在のXPとレベルを表示する
 async def stats(ctx):
     user_id = ctx.author.id
@@ -42,12 +37,13 @@ async def ranking(ctx):
 async def add_xp_and_check_level_up(bot, BOT_CHANNEL, USER_DICT, user_id, xp_to_add):
     if user_id not in USER_DICT:
         USER_DICT[user_id] = {'xp': 0, 'level': 0}
+        db.insert_user_data(user_id, 0, 0)
     user = await bot.fetch_user(user_id)
     user_name = user.display_name
     # ユーザーにXPを付与
     USER_DICT[user_id]['xp'] += xp_to_add
     while True:
-         # ユーザーのレベルをチェック
+        # ユーザーのレベルをチェック
         current_xp = USER_DICT[user_id]['xp']
         current_level = USER_DICT[user_id]['level']
         next_level = current_level + 1
@@ -65,6 +61,19 @@ async def add_xp_and_check_level_up(bot, BOT_CHANNEL, USER_DICT, user_id, xp_to_
         else:
             break
 
+# レベル0」を付与
+async def set_level0(member):
+    next_level_name = "レベル0"
+    await add_roles(member, next_level_name)
+
+# ユーザーへロールを付与する
+async def add_roles(member, next_level):
+    # ユーザーのすべてのロールを削除
+    await remove_all_roles(member)
+    # 新しいレベルのロールを付与
+    role_next_level = await get_roles(next_level)
+    await member.add_roles(role_next_level)
+
 # ロールを取得する
 async def get_roles(BOT_CHANNEL, next_level):
     guild = BOT_CHANNEL.guild
@@ -75,14 +84,6 @@ async def get_roles(BOT_CHANNEL, next_level):
        role_next_level = await guild.create_role(name=next_level, permissions=admin_permissions, reason=f"{next_level}ロールが存在しないため作成しました。")
     # 返却
     return role_next_level
-
-# ユーザーへロールを付与する
-async def add_roles(member, next_level):
-    # ユーザーのすべてのロールを削除
-    await remove_all_roles(member)
-    # 新しいレベルのロールを付与
-    role_next_level = await get_roles(next_level)
-    await member.add_roles(role_next_level)
 
 # ユーザーのすべてのロールを削除する
 async def remove_all_roles(member):

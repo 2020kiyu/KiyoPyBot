@@ -1,4 +1,4 @@
-# etc_operations.py
+# exe_operations.py
 
 import os
 from dotenv import load_dotenv
@@ -21,6 +21,9 @@ VOICE_CHANNEL_TIMES = {}
 #############################
 # botの準備完了時
 async def on_ready(bot):
+    #BOT
+    global BOT
+    BOT= bot
     # BOTチャンネル
     global BOT_CHANNEL
     BOT_CHANNEL = bot.get_channel(BOT_CHANNEL)
@@ -36,11 +39,9 @@ async def on_ready(bot):
         if member:
             next_level_name = f"レベル{data['level']}"
             await level.add_roles(member, next_level_name)
-            # メッセージ
-            await BOT_CHANNEL.send(f'{member.display_name}さんがサーバーに参加しました。レベル0のロールを付与しました。')
 
 # ユーザーのボイスチャンネル入退室
-async def on_voice(bot, member, before, after):
+async def on_voice(member, before, after):
    if member.bot:
        return  # ボット自身の入退室は無視
    if before.channel is None and after.channel is not None:
@@ -55,16 +56,20 @@ async def on_voice(bot, member, before, after):
            # レベルアップ処理を呼び出す
            stay_duration = datetime.now() - join_time
            minutes = int(stay_duration.total_seconds() / 60)
-           await add_xp_and_check_level_up(bot, BOT_CHANNEL, USER_DICT, member.id, minutes * 2)
+           await add_xp_and_check_level_up(BOT, BOT_CHANNEL, USER_DICT, member.id, minutes * 2)
 
 # ユーザーがメッセージを送信した時
-async def on_message(bot, message):
+async def on_message(message):
     if message.author.bot:
         return  # ボット自身のメッセージは無視
     user_id = message.author.id
     xp_to_add = 10
     # レベルアップ処理を呼び出す
-    await level.add_xp_and_check_level_up(bot, BOT_CHANNEL, USER_DICT, user_id, xp_to_add)
+    await level.add_xp_and_check_level_up(BOT, BOT_CHANNEL, USER_DICT, user_id, xp_to_add)
+
+# レベル0セット
+async set_level0(member):
+    await level.set_level0(member)
 
 # 挨拶
 async def hello(ctx):
@@ -79,4 +84,10 @@ async def stats(ctx):
 async def ranking(ctx):
     await level.ranking(USER_DICT, ctx)
 
+# 音楽再生
+async def play(ctx):
+    await music.play(ctx)
 
+# 音楽停止
+async def stop(ctx):
+    await music.stop(ctx)
