@@ -12,7 +12,7 @@ from app.sub import db_operations as db
 # 処理
 #############################
 # 現在のXPとレベルを表示する
-async def stats(ctx):
+async def stats(USER_DICT, ctx):
     user_id = ctx.author.id
     if user_id in USER_DICT:
         xp = USER_DICT[user_id]['xp']
@@ -25,7 +25,7 @@ async def stats(ctx):
         await ctx.send(f'{ctx.author.display_name}さんはまだXPを獲得していません。')
 
 # XP取得ランキングを表示する
-async def ranking(ctx):
+async def ranking(USER_DICT, ctx):
     sorted_users = sorted(USER_DICT.items(), key=lambda x: x[1]['xp'], reverse=True)
     ranking_message = "ランキング:\n"
     for i, (user_id, data) in enumerate(sorted_users, start=1):

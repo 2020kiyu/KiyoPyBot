@@ -23,12 +23,10 @@ Commands:
 - 音声サーバーに1分滞在するごとに2XPもらえます。
 """
 import os
-import asyncio
 import json
 import discord
 import logging
 from discord.ext import commands
-from datetime import datetime
 from dotenv import load_dotenv
 from app.sub import exe_operations as exe
 

@@ -1,6 +1,7 @@
 # music_operations.py
 
 import discord
+import asyncio
 from discord.ext import commands
 
 # 音楽再生

@@ -2,7 +2,9 @@
 
 import os
 from dotenv import load_dotenv
+from datetime import datetime
 from app.sub import level_operations as level
+from app.sub import music_operations as music
 from app.sub import db_operations as db
 
 #############################
@@ -67,7 +69,7 @@ async def on_message(message):
     await level.add_xp_and_check_level_up(BOT, BOT_CHANNEL, USER_DICT, user_id, xp_to_add)
 
 # レベル0セット
-async set_level0(member):
+async def set_level0(member):
     await level.set_level0(member)
 
 # 挨拶
