@@ -57,7 +57,7 @@ async def on_voice(member, before, after):
            # レベルアップ処理を呼び出す
            stay_duration = datetime.now() - join_time
            minutes = int(stay_duration.total_seconds() / 60)
-           await add_xp_and_check_level_up(BOT, BOT_CHANNEL, USER_DICT, member.id, minutes * 2)
+           await level.add_xp_and_check_level_up(BOT, BOT_CHANNEL, USER_DICT, member.id, minutes * 2)
 
 # ユーザーがメッセージを送信した時
 async def on_message(message):
@@ -70,7 +70,7 @@ async def on_message(message):
 
 # レベル0セット
 async def set_level0(member):
-    await level.set_level0(member)
+    await level.set_level0(BOT_CHANNEL, member)
 
 # 挨拶
 async def hello(ctx):
