@@ -56,7 +56,7 @@ async def add_xp_and_check_level_up(bot, BOT_CHANNEL, user_id, xp_to_add):
             member = guild.get_member(user_id)
             next_level_name = f"レベル{next_level}"
             await add_roles(BOT_CHANNEL, member, next_level_name)
-            await db.update_user_data(user_id, user_data['xp'], user_data['level'])
+            db.update_user_data(user_id, user_data['xp'], user_data['level'])
             # レベルアップメッセージ
             await BOT_CHANNEL.send(f'{user_name}さん、レベル{next_level}にアップしました！')
         else:
