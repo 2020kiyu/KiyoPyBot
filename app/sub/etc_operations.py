@@ -52,7 +52,6 @@ async def on_voice(member, before, after)
            # レベルアップ処理を呼び出す
            stay_duration = datetime.now() - join_time
            minutes = int(stay_duration.total_seconds() / 60)
-           await BOT_CHANNEL.send(f'{mem
            await add_xp_and_check_level_up(member.id, minutes * 2)
 
 # ユーザーがメッセージを送信した時
