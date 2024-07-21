@@ -1,5 +1,3 @@
-# level_operations.py
-
 import discord
 from app.sub import db_operations as db
 
@@ -38,6 +36,7 @@ async def add_xp_and_check_level_up(bot, BOT_CHANNEL, user_id, xp_to_add):
     user_data = db.get_user_data(user_id)
     if user_data is None:
         db.insert_user_data(user_id, 0, 0)
+        user_data = {'xp': 0, 'level': 0}  # ユーザーデータがNoneの場合に初期化
     user = await bot.fetch_user(user_id)
     user_name = user.display_name
     # ユーザーにXPを付与
@@ -51,14 +50,16 @@ async def add_xp_and_check_level_up(bot, BOT_CHANNEL, user_id, xp_to_add):
         next_level = current_level + 1
         next_xp = next_level * (next_level + 1) // 2 * 10
         if current_xp >= next_xp:
+            user_data['level'] = next_level
+            db.update_user_data(user_id, current_xp, next_level)
             # ユーザーのレベルに応じたロールの付与と削除
             guild = BOT_CHANNEL.guild
             member = guild.get_member(user_id)
-            next_level_name = f"レベル{next_level}"
-            await add_roles(BOT_CHANNEL, member, next_level_name)
-            db.update_user_data(user_id, user_data['xp'], user_data['level'])
-            # レベルアップメッセージ
-            await BOT_CHANNEL.send(f'{user_name}さん、レベル{next_level}にアップしました！')
+            if member:
+                next_level_name = f"レベル{next_level}"
+                await add_roles(BOT_CHANNEL, member, next_level_name)
+                # レベルアップメッセージ
+                await BOT_CHANNEL.send(f'{user_name}さん、レベル{next_level}にアップしました！')
         else:
             break
 
@@ -88,8 +89,7 @@ async def get_roles(BOT_CHANNEL, next_level):
 
 # ユーザーのすべてのロールを削除する
 async def remove_all_roles(member):
-    if member is not None and member.roles is not None and member.roles.length > 1:
+    if member is not None and hasattr(member, 'roles') and len(member.roles) > 1:
         roles = member.roles[1:]  # member.roles[0]は@everyoneロールなのでスキップ
         if roles:
             await member.remove_roles(*roles)
-
