@@ -12,6 +12,7 @@ Last Updated: 2024-07-21
 Commands:
 - /hello  : 挨拶コマンド.
 - /play   : 音楽再生コマンド.
+- /stop   ; 音楽停止コマンド
 - /stats  : ユーザーのレベル表示コマンド.
 - /ranking: ランキング表示コマンド.
  
@@ -20,7 +21,6 @@ Commands:
 - botはユーザのレベルと経験値(XP)を管理しています。
 - 発言1回につき10XPもらえます。
 - 音声サーバーに1分滞在するごとに2XPもらえます。
-- レベルの上限は100レベルです。※達成するには5050回の発言が必要です。
 """
 import os
 import asyncio
@@ -59,7 +59,7 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 @bot.event
 async def on_ready():
     logging.info(f'event on_ready [{bot.user.name}]')
-    await etc.on_ready()
+    await etc.on_ready(bot)
 
 # ユーザーのボイスチャンネル入退室
 @bot.event

@@ -19,7 +19,7 @@ VOICE_CHANNEL_TIMES = {}
 # 処理
 #############################
 # botの準備完了時
-async def on_ready():
+async def on_ready(bot):
     # BOTチャンネル
     global BOT_CHANNEL
     BOT_CHANNEL = bot.get_channel(BOT_CHANNEL)
