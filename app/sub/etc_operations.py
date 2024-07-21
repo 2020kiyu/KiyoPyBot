@@ -40,7 +40,7 @@ async def on_ready(bot):
             await BOT_CHANNEL.send(f'{member.display_name}さんがサーバーに参加しました。レベル0のロールを付与しました。')
 
 # ユーザーのボイスチャンネル入退室
-async def on_voice(member, before, after):
+async def on_voice(bot, member, before, after):
    if member.bot:
        return  # ボット自身の入退室は無視
    if before.channel is None and after.channel is not None:
@@ -58,7 +58,7 @@ async def on_voice(member, before, after):
            await add_xp_and_check_level_up(bot, BOT_CHANNEL, USER_DICT, member.id, minutes * 2)
 
 # ユーザーがメッセージを送信した時
-async def on_message(message):
+async def on_message(bot, message):
     if message.author.bot:
         return  # ボット自身のメッセージは無視
     user_id = message.author.id

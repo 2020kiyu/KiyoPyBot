@@ -65,13 +65,13 @@ async def on_ready():
 @bot.event
 async def on_voice_state_update(member, before, after):
     logging.info('event on_voice_state_update')
-    await etc.on_voice(member, before, after)
+    await etc.on_voice(bot, member, before, after)
  
 # ユーザーがメッセージを送信した時のイベント
 @bot.event
 async def on_message(message):
     logging.info('event on_message')
-    await etc.on_message(message)
+    await etc.on_message(bot, message)
     await bot.process_commands(message)
 
 # サーバー参加時にロール「レベル0」を付与
