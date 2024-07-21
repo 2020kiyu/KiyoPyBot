@@ -1,6 +1,6 @@
 # etc_operations.py
 
-from app import level_operations as level
+from app.sub import level_operations as level
 
 #############################
 # 変数

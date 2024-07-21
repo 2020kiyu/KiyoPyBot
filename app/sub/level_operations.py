@@ -1,7 +1,7 @@
 # level_operations.py
 
 import discord
-from app import db_operations as db
+from app.sub import db_operations as db
 
 #############################
 # 変数
