@@ -1,0 +1,42 @@
+# music_operations.py
+
+import discord
+from discord.ext import commands
+
+# 音楽再生
+async def play(ctx):
+    # ボイスチャンネルに接続
+    if ctx.author.voice is None:
+        await ctx.send("まず、ボイスチャンネルに参加してください。")
+        return
+    # 発言者の入っているボイチャ特定
+    channel = ctx.author.voice.channel
+    # BOT入室
+    if ctx.voice_client is None:
+        vc = await channel.connect()
+    else:
+        vc = ctx.voice_client
+    for i in range(5):
+        # 音楽を再生
+        audio_source = discord.FFmpegPCMAudio(source="./music/loop_music.mp3")
+        vc.play(audio_source, after=lambda e: asyncio.create_task(handle_playback_error(ctx, e)))
+        # 再生が終了するまで待機
+        while vc.is_playing():
+            await asyncio.sleep(1)
+        # 再生終了後にボイスチャンネルから切断
+    await vc.disconnect()
+
+# 音楽停止
+async def stop(ctx):
+    if ctx.voice_client:
+        if ctx.voice_client.is_playing():
+            ctx.voice_client.stop()  # 再生中の音楽を停止
+        await ctx.voice_client.disconnect()
+    else:
+        await ctx.send("ボイスチャンネルに入ってません！")
+
+# 再生エラー処理
+async def handle_playback_error(ctx, error):
+    if error:
+        await ctx.send(f'音楽の再生中にエラーが発生しました: {error}')
+

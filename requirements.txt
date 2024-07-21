@@ -2,3 +2,4 @@ asyncio
 discord
 python-dotenv
 PyNaCl
+supabase
