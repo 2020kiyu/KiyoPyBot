@@ -70,3 +70,13 @@ async def on_message(bot, message):
 async def hello(ctx):
     user_name = ctx.author.display_name  # 発言したユーザー名
     await ctx.send(f'{user_name}さん こんちゃす☆彡')
+
+# ステータス確認
+async def stats(ctx):
+    await level.stats(USER_DICT, ctx)
+
+# ランキング確認
+async def ranking(ctx):
+    await level.ranking(USER_DICT, ctx)
+
+

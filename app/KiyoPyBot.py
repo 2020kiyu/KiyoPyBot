@@ -102,13 +102,13 @@ async def stop(ctx):
 @bot.command()
 async def stats(ctx):
     logging.info('command stats')
-    await level.stats(ctx)
+    await etc.stats(ctx)
 
 # (ranking)XP取得ランキングを表示するコマンド
 @bot.command()
 async def ranking(ctx):
     logging.info('command ranking')
-    await level.ranking(ctx)
+    await etc.ranking(ctx)
 
 # 実行
 bot.run(BOT_TOKEN)
