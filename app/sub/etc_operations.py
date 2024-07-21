@@ -3,6 +3,7 @@
 import os
 from dotenv import load_dotenv
 from app.sub import level_operations as level
+from app.sub import db_operations as db
 
 #############################
 # 変数
@@ -25,7 +26,7 @@ async def on_ready(bot):
     BOT_CHANNEL = bot.get_channel(BOT_CHANNEL)
     # ユーザーデータをロード
     global USER_DICT
-    USER_DICT = get_all_users()
+    USER_DICT = db.get_all_users()
     # ロール「レベル0」を準備
     await level.get_roles("レベル0")
     # ユーザーデータに基づいてロールを付け替え
