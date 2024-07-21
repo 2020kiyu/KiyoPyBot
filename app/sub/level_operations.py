@@ -39,7 +39,7 @@ async def ranking(ctx):
     await ctx.send(ranking_message)
 
 # レベルアップ処理
-async def add_xp_and_check_level_up(BOT_CHANNEL, USER_DICT, user_id, xp_to_add):
+async def add_xp_and_check_level_up(bot, BOT_CHANNEL, USER_DICT, user_id, xp_to_add):
     if user_id not in USER_DICT:
         USER_DICT[user_id] = {'xp': 0, 'level': 0}
     user = await bot.fetch_user(user_id)
