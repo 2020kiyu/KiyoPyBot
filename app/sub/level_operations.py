@@ -87,7 +87,7 @@ async def get_roles(BOT_CHANNEL, next_level):
 
 # ユーザーのすべてのロールを削除する
 async def remove_all_roles(member):
-    if member.roles is None and member.roles.length > 1:
+    if member is not None and member.roles is not None and member.roles.length > 1:
         roles = member.roles[1:]  # member.roles[0]は@everyoneロールなのでスキップ
         if roles:
             await member.remove_roles(*roles)
