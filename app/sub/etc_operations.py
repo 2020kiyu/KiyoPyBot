@@ -47,7 +47,8 @@ async def on_voice(member, before, after)
    elif before.channel is not None and after.channel is None:
        # ユーザーがボイスチャンネルから退出した場合
        join_time = VOICE_CHANNEL_TIMES.pop(member.id, None)
-       if join_time:ber.display_name}さん、ボイスチャンネルに{minutes:.2f}分間滞在しました。')
+       if join_time:
+           await BOT_CHANNEL.send(f'{member.display_name}さん、ボイスチャンネルに{minutes:.2f}分間滞在しました。')
            # レベルアップ処理を呼び出す
            stay_duration = datetime.now() - join_time
            minutes = int(stay_duration.total_seconds() / 60)
