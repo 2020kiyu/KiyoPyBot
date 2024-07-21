@@ -11,11 +11,12 @@ from app.sub import db_operations as db
 # 処理
 #############################
 # 現在のXPとレベルを表示する
-async def stats(USER_DICT, ctx):
+async def stats(ctx):
     user_id = ctx.author.id
-    if user_id in USER_DICT:
-        xp = USER_DICT[user_id]['xp']
-        level = USER_DICT[user_id]['level']
+    user_data = db.get_user_data(user_id)
+    if user_data:
+        xp = user_data['xp']
+        level = user_data['level']
         next_level = level + 1
         next_xp = next_level * (next_level + 1) // 2 * 10
         zan_xp = next_xp - xp
@@ -24,8 +25,8 @@ async def stats(USER_DICT, ctx):
         await ctx.send(f'{ctx.author.display_name}さんはまだXPを獲得していません。')
 
 # XP取得ランキングを表示する
-async def ranking(BOT, USER_DICT, ctx):
-    sorted_users = sorted(USER_DICT.items(), key=lambda x: x[1]['xp'], reverse=True)
+async def ranking(BOT, ctx):
+    sorted_users = db.get_users_sorted_by_xp()
     ranking_message = "ランキング:\n"
     for i, (user_id, data) in enumerate(sorted_users, start=1):
         user = await BOT.fetch_user(user_id)
@@ -33,30 +34,31 @@ async def ranking(BOT, USER_DICT, ctx):
     await ctx.send(ranking_message)
 
 # レベルアップ処理
-async def add_xp_and_check_level_up(bot, BOT_CHANNEL, USER_DICT, user_id, xp_to_add):
-    if user_id not in USER_DICT:
-        USER_DICT[user_id] = {'xp': 0, 'level': 0}
+async def add_xp_and_check_level_up(bot, BOT_CHANNEL, user_id, xp_to_add):
+    user_data = db.get_user_data(user_id)
+    if user_data is None:
         db.insert_user_data(user_id, 0, 0)
     user = await bot.fetch_user(user_id)
     user_name = user.display_name
     # ユーザーにXPを付与
-    USER_DICT[user_id]['xp'] += xp_to_add
+    user_data['xp'] += xp_to_add
+    await db.update_user_data(user_id, user_data['xp'], user_data['level'])
     while True:
         # ユーザーのレベルをチェック
-        current_xp = USER_DICT[user_id]['xp']
-        current_level = USER_DICT[user_id]['level']
+        user_data = db.get_user_data(user_id)
+        current_xp = user_data['xp']
+        current_level = user_data['level']
         next_level = current_level + 1
         next_xp = next_level * (next_level + 1) // 2 * 10
         if current_xp >= next_xp:
-            # レベルアップ処理
-            USER_DICT[user_id]['level'] = next_level
-            await BOT_CHANNEL.send(f'{user_name}さん、レベル{next_level}にアップしました！')
             # ユーザーのレベルに応じたロールの付与と削除
             guild = BOT_CHANNEL.guild
             member = guild.get_member(user_id)
             next_level_name = f"レベル{next_level}"
             await add_roles(BOT_CHANNEL, member, next_level_name)
-            await db.update_user_data(user_id, USER_DICT[user_id]['xp'], USER_DICT[user_id]['level'])
+            await db.update_user_data(user_id, user_data['xp'], user_data['level'])
+            # レベルアップメッセージ
+            await BOT_CHANNEL.send(f'{user_name}さん、レベル{next_level}にアップしました！')
         else:
             break
 

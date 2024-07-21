@@ -32,7 +32,10 @@ def get_all_users():
 # 取得
 def get_user_data(user_id):
     response = supabase.table('USER_DATA').select('*').eq('id', user_id).execute()
-    return response.data
+    user = response.data  # データをusers変数に格納
+    # id をキーにして XP と LEVEL を持つ辞書を作成
+    user_data = {'xp': user['xp'], 'level': user['level']}
+    return user_data
 
 # 更新
 def update_user_data(user_id, xp, level):

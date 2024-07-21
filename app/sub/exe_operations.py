@@ -29,13 +29,12 @@ async def on_ready(bot):
     global BOT_CHANNEL
     BOT_CHANNEL = bot.get_channel(BOT_CHANNEL)
     # ユーザーデータをロード
-    global USER_DICT
-    USER_DICT = db.get_all_users()
+    user_dict = db.get_all_users()
     # ロール「レベル0」を準備
     await level.get_roles(BOT_CHANNEL, "レベル0")
     # ユーザーデータに基づいてロールを付け替え
     guild = BOT_CHANNEL.guild
-    for user_id, data in USER_DICT.items():
+    for user_id, data in user_dict.items():
         member = guild.get_member(int(user_id))
         if member:
             next_level_name = f"レベル{data['level']}"
@@ -57,7 +56,7 @@ async def on_voice(member, before, after):
            # レベルアップ処理を呼び出す
            stay_duration = datetime.now() - join_time
            minutes = int(stay_duration.total_seconds() / 60)
-           await level.add_xp_and_check_level_up(BOT, BOT_CHANNEL, USER_DICT, member.id, minutes * 2)
+           await level.add_xp_and_check_level_up(BOT, BOT_CHANNEL, member.id, minutes * 2)
 
 # ユーザーがメッセージを送信した時
 async def on_message(message):
@@ -66,7 +65,7 @@ async def on_message(message):
     user_id = message.author.id
     xp_to_add = 10
     # レベルアップ処理を呼び出す
-    await level.add_xp_and_check_level_up(BOT, BOT_CHANNEL, USER_DICT, user_id, xp_to_add)
+    await level.add_xp_and_check_level_up(BOT, BOT_CHANNEL, user_id, xp_to_add)
 
 # レベル0セット
 async def set_level0(member):
@@ -79,11 +78,11 @@ async def hello(ctx):
 
 # ステータス確認
 async def stats(ctx):
-    await level.stats(USER_DICT, ctx)
+    await level.stats(ctx)
 
 # ランキング確認
 async def ranking(ctx):
-    await level.ranking(USER_DICT, ctx)
+    await level.ranking(ctx)
 
 # 音楽再生
 async def play(ctx):
