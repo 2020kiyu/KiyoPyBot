@@ -36,8 +36,8 @@ async def on_ready(bot):
         if member:
             next_level_name = f"レベル{data['level']}"
             await level.add_roles(member, next_level_name)
-    # メッセージ
-    await BOT_CHANNEL.send(f'{member.display_name}さんがサーバーに参加しました。レベル0のロールを付与しました。')
+            # メッセージ
+            await BOT_CHANNEL.send(f'{member.display_name}さんがサーバーに参加しました。レベル0のロールを付与しました。')
 
 # ユーザーのボイスチャンネル入退室
 async def on_voice(member, before, after):
