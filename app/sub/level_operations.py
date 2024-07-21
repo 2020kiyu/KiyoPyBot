@@ -42,7 +42,7 @@ async def add_xp_and_check_level_up(bot, BOT_CHANNEL, user_id, xp_to_add):
     user_name = user.display_name
     # ユーザーにXPを付与
     user_data['xp'] += xp_to_add
-    await db.update_user_data(user_id, user_data['xp'], user_data['level'])
+    db.update_user_data(user_id, user_data['xp'], user_data['level'])
     while True:
         # ユーザーのレベルをチェック
         user_data = db.get_user_data(user_id)
