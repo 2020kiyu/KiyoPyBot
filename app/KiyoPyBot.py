@@ -1,3 +1,27 @@
+"""
+Discord Bot Script
+KiyoPyBot
+ 
+・ユーザーのレベル管理を行う。
+・ボイスチャンネルで音楽を流す。
+
+Author      : Yushi Kiyota
+Created     : 2024-07-18
+Last Updated: 2024-07-21
+ 
+Commands:
+- /hello  : 挨拶コマンド.
+- /play   : 音楽再生コマンド.
+- /stats  : ユーザーのレベル表示コマンド.
+- /ranking: ランキング表示コマンド.
+ 
+仕様:
+- サーバー参加時に自動で"レベル0"ロールが割り当てられます.
+- botはユーザのレベルと経験値(XP)を管理しています。
+- 発言1回につき10XPもらえます。
+- 音声サーバーに1分滞在するごとに2XPもらえます。
+- レベルの上限は100レベルです。※達成するには5050回の発言が必要です。
+"""
 import os
 import asyncio
 import json
