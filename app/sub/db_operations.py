@@ -4,6 +4,9 @@ import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
+#############################
+# 変数
+#############################
 #環境変数の読み込み
 load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -12,6 +15,9 @@ SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 # DBの設定
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+#############################
+# 処理
+#############################
 # 全データ取得
 def get_all_users():
     response = supabase.table('USER_DATA').select('*').execute()

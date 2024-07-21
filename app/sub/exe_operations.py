@@ -15,7 +15,6 @@ BOT_CHANNEL = int(os.getenv('BOT_CHANNEL'))
 #ボイスチャンネル滞在
 VOICE_CHANNEL_TIMES = {}
 
-
 #############################
 # 処理
 #############################
