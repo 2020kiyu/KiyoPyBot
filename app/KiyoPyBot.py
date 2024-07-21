@@ -6,9 +6,9 @@ import logging
 from discord.ext import commands
 from datetime import datetime
 from dotenv import load_dotenv
-from app import music_operations as music
-from app import etc_operations as etc
-from app import level_operations as level
+from app.sub import music_operations as music
+from app.sub import etc_operations as etc
+from app.sub import level_operations as level
 
 #############################
 # 変数
