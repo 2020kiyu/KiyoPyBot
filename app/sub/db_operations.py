@@ -48,7 +48,7 @@ async def get_user_data(s_id, user_id):
 
 # 更新
 async def update_user_data(s_id, user_id, xp, level):
-    sid = str(s_id)
+    s_id = str(s_id)
     user_id = str(user_id)
     xp = int(float(xp))
     level = int(float(level))

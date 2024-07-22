@@ -47,7 +47,7 @@ async def ranking(ctx):
 # レベルアップ処理
 async def add_xp_and_check_level_up(member, xp_to_add):
     guild = member.guild
-    channel = exe.get_bot_channel(guild)
+    channel = await exe.get_bot_channel(guild)
     s_id = guild.id
     user_id = member.id
     user_data = await db.get_user_data(s_id, user_id)
