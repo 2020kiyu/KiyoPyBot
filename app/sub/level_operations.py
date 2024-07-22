@@ -1,6 +1,7 @@
 import discord
 from app.sub import db_operations as db
 
+
 #############################
 # 変数
 #############################
@@ -13,8 +14,9 @@ async def on_ready(bot, bot_channel):
     # 初期化
     global BOT
     global BOT_CHANNEL
-    BOT= bot
+    BOT = bot
     BOT_CHANNEL = bot_channel
+
 
 # 現在のXPとレベルを表示する
 async def stats(ctx):
@@ -26,9 +28,11 @@ async def stats(ctx):
         next_level = level + 1
         next_xp = next_level * (next_level + 1) // 2 * 10
         zan_xp = next_xp - xp
-        await ctx.send(f'{ctx.author.display_name}さん\n現在のXPは{xp}、\nレベルは{level}です。\n次のレベルまであと{zan_xp}XPです。')
+        await ctx.send(
+            f'{ctx.author.display_name}さん\n現在のXPは{xp}、\nレベルは{level}です。\n次のレベルまであと{zan_xp}XPです。')
     else:
         await ctx.send(f'{ctx.author.display_name}さんはまだXPを獲得していません。')
+
 
 # XP取得ランキングを表示する
 async def ranking(ctx):
@@ -39,13 +43,14 @@ async def ranking(ctx):
         ranking_message += f'{i}. {user.display_name} - レベル: {data["level"]}, XP: {data["xp"]}\n'
     await ctx.send(ranking_message)
 
+
 # レベルアップ処理
 async def add_xp_and_check_level_up(user_id, xp_to_add):
     user_data = db.get_user_data(user_id)
     if user_data is None:
         db.insert_user_data(user_id, 0, 0)
         user_data = {'xp': 0, 'level': 0}  # ユーザーデータがNoneの場合に初期化
-    user = await bot.fetch_user(user_id)
+    user = await BOT.fetch_user(user_id)
     user_name = user.display_name
     # ユーザーにXPを付与
     user_data['xp'] += xp_to_add
@@ -71,10 +76,12 @@ async def add_xp_and_check_level_up(user_id, xp_to_add):
         else:
             break
 
+
 # レベル0」を付与
 async def set_level0(member):
     next_level_name = "レベル0"
     await add_roles(member, next_level_name)
+
 
 # ユーザーへロールを付与する
 async def add_roles(member, next_level):
@@ -84,6 +91,7 @@ async def add_roles(member, next_level):
     role_next_level = await get_roles(next_level)
     await member.add_roles(role_next_level)
 
+
 # ロールを取得する
 async def get_roles(next_level):
     guild = BOT_CHANNEL.guild
@@ -91,9 +99,11 @@ async def get_roles(next_level):
     role_next_level = discord.utils.get(guild.roles, name=next_level)
     # なければ新規作成
     if not role_next_level:
-       role_next_level = await guild.create_role(name=next_level, permissions=admin_permissions, reason=f"{next_level}ロールが存在しないため作成しました。")
+        role_next_level = await guild.create_role(name=next_level, permissions=admin_permissions,
+                                                  reason=f"{next_level}ロールが存在しないため作成しました。")
     # 返却
     return role_next_level
+
 
 # ユーザーのすべてのロールを削除する
 async def remove_all_roles(member):

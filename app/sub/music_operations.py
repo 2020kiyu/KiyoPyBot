@@ -2,7 +2,7 @@
 
 import discord
 import asyncio
-from discord.ext import commands
+
 
 # 音楽再生
 async def play(ctx):
@@ -27,6 +27,7 @@ async def play(ctx):
         # 再生終了後にボイスチャンネルから切断
     await vc.disconnect()
 
+
 # 音楽停止
 async def stop(ctx):
     if ctx.voice_client:
@@ -36,8 +37,8 @@ async def stop(ctx):
     else:
         await ctx.send("ボイスチャンネルに入ってません！")
 
+
 # 再生エラー処理
 async def handle_playback_error(ctx, error):
     if error:
         await ctx.send(f'音楽の再生中にエラーが発生しました: {error}')
-
