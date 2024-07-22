@@ -65,10 +65,6 @@ def insert_user_data(user_id, xp, level):
 # ランキング取得
 def get_users_sorted_by_xp():
     response = supabase.table('USER_DATA').select('*').order('xp', desc=True).execute()
-    users = response.data  # データをusers変数に格納
-    # id をキーにして XP と LEVEL を持つ辞書を作成
-    user_dict = {}
-    for user in users:
-        user_dict[int(user['id'])] = {'xp': user['xp'], 'level': user['level']}
-    # 辞書形式でデータを返却
-    return user_dict
+    sorted_users = response.data  # データをusers変数に格納
+    # タプルのリストに変換
+    return [(int(user['id']), {'xp': user['xp'], 'level': user['level']}) for user in sorted_users]
