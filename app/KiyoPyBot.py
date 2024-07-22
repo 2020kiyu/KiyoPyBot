@@ -48,7 +48,7 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='/', intents=intents)
 
 # ロギングの設定
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Flask アプリの設定
 app = Flask(__name__)
