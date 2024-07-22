@@ -50,7 +50,7 @@ async def ranking(ctx):
 
 # レベルアップ処理
 async def add_xp_and_check_level_up(user_id, xp_to_add):
-    user_data = db.get_user_data(user_id)
+    user_data = await db.get_user_data(user_id)
     if user_data is None:
         await db.insert_user_data(user_id, 0, 0)
         user_data = {'xp': 0, 'level': 0}  # ユーザーデータがNoneの場合に初期化
@@ -61,7 +61,7 @@ async def add_xp_and_check_level_up(user_id, xp_to_add):
     await db.update_user_data(user_id, user_data['xp'], user_data['level'])
     while True:
         # ユーザーのレベルをチェック
-        user_data = db.get_user_data(user_id)
+        user_data = await db.get_user_data(user_id)
         current_xp = user_data['xp']
         current_level = user_data['level']
         next_level = current_level + 1
