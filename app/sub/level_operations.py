@@ -71,7 +71,7 @@ async def add_xp_and_check_level_up(user_id, xp_to_add):
             await db.update_user_data(user_id, current_xp, next_level)
             # ユーザーのレベルに応じたロールの付与と削除
             guild = BOT_CHANNEL.guild
-            member = guild.get_member(user_id)
+            member = await guild.fetch_member(int(user_id))
             next_level_name = f"レベル{next_level}"
             await add_roles(member, next_level_name)
             # レベルアップメッセージ
