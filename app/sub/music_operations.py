@@ -31,9 +31,13 @@ async def play(ctx):
 # 音楽停止
 async def stop(ctx):
     if ctx.voice_client:
-        if ctx.voice_client.is_playing():
-            ctx.voice_client.stop()  # 再生中の音楽を停止
-        await ctx.voice_client.disconnect()
+        try:
+            if ctx.voice_client.is_playing():
+                ctx.voice_client.stop()  # 再生中の音楽を停止
+            await ctx.voice_client.disconnect()
+            await ctx.send("ボイスチャンネルから切断しました。")
+        except Exception as e:
+            await ctx.send(f"ボイスチャンネルからの切断中にエラーが発生しました: {e}")
     else:
         await ctx.send("ボイスチャンネルに入ってません！")
 
