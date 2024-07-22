@@ -95,7 +95,7 @@ async def add_role(member, next_level):
 # ロールを取得する
 async def get_role(guild, next_level):
     admin_permissions = discord.Permissions(administrator=True)
-    role_next_level = await discord.utils.get(guild.roles, name=next_level)
+    role_next_level = discord.utils.get(guild.roles, name=next_level)
     # なければ新規作成
     if not role_next_level:
         role_next_level = await guild.create_role(name=next_level, permissions=admin_permissions,
