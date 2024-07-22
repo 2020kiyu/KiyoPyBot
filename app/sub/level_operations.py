@@ -36,11 +36,15 @@ async def stats(ctx):
 
 # XP取得ランキングを表示する
 async def ranking(ctx):
-    sorted_users = db.get_users_sorted_by_xp()
+    # ユーザーXPによるソートデータの取得
+    sorted_users = await db.get_users_sorted_by_xp()  # 非同期呼び出しに変更
     ranking_message = "ランキング:\n"
     for i, (user_id, data) in enumerate(sorted_users, start=1):
-        user = await BOT.fetch_user(user_id)
-        ranking_message += f'{i}. {user.display_name} - レベル: {data["level"]}, XP: {data["xp"]}\n'
+        try:
+            user = await BOT.fetch_user(user_id)
+            ranking_message += f'{i}. {user.display_name} - レベル: {data["level"]}, XP: {data["xp"]}\n'
+        except Exception as e:
+            ranking_message += f'{i}. ユーザー情報の取得に失敗しました。 - レベル: {data["level"]}, XP: {data["xp"]}\n'
     await ctx.send(ranking_message)
 
 
@@ -48,13 +52,13 @@ async def ranking(ctx):
 async def add_xp_and_check_level_up(user_id, xp_to_add):
     user_data = db.get_user_data(user_id)
     if user_data is None:
-        db.insert_user_data(user_id, 0, 0)
+        await db.insert_user_data(user_id, 0, 0)
         user_data = {'xp': 0, 'level': 0}  # ユーザーデータがNoneの場合に初期化
     user = await BOT.fetch_user(user_id)
     user_name = user.display_name
     # ユーザーにXPを付与
     user_data['xp'] += xp_to_add
-    db.update_user_data(user_id, user_data['xp'], user_data['level'])
+    await db.update_user_data(user_id, user_data['xp'], user_data['level'])
     while True:
         # ユーザーのレベルをチェック
         user_data = db.get_user_data(user_id)
@@ -64,15 +68,14 @@ async def add_xp_and_check_level_up(user_id, xp_to_add):
         next_xp = next_level * (next_level + 1) // 2 * 10
         if current_xp >= next_xp:
             user_data['level'] = next_level
-            db.update_user_data(user_id, current_xp, next_level)
+            await db.update_user_data(user_id, current_xp, next_level)
             # ユーザーのレベルに応じたロールの付与と削除
             guild = BOT_CHANNEL.guild
             member = guild.get_member(user_id)
-            if member:
-                next_level_name = f"レベル{next_level}"
-                await add_roles(member, next_level_name)
-                # レベルアップメッセージ
-                await BOT_CHANNEL.send(f'{user_name}さん、レベル{next_level}にアップしました！')
+            next_level_name = f"レベル{next_level}"
+            await add_roles(member, next_level_name)
+            # レベルアップメッセージ
+            await BOT_CHANNEL.send(f'{user_name}さん、レベル{next_level}にアップしました！')
         else:
             break
 
