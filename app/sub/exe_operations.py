@@ -36,11 +36,11 @@ async def on_ready(bot):
         guild = channel.guild
         users = await db.get_all_users(guild.id)
         # ロール「レベル0」を準備
-        await level.get_roles(guild, "レベル0")
+        await level.get_role(guild, "レベル0")
         for (user_id, data) in users:
-            member = guild.get_member(int(user_id))
+            member = await guild.fetch_member(int(user_id))
             next_level_name = f"レベル{data['level']}"
-            await level.add_roles(member, next_level_name)
+            await level.add_role(member, next_level_name)
 
 
 # チャンネルを取得する
