@@ -23,13 +23,9 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 async def get_all_users(s_id):
     s_id = str(s_id)
     response = supabase.table('USER_DATA').select('*').eq('s_id', s_id).execute()
-    users = response.data  # データをusers変数に格納
-    # u_id をキーにして XP と LEVEL を持つ辞書を作成
-    user_dict = {}
-    for user in users:
-        user_dict[int(user['u_id'])] = {'xp': user['xp'], 'level': user['level']}
-    # 辞書形式でデータを返却
-    return user_dict
+    sorted_users = response.data  # データをusers変数に格納
+    # タプルのリストに変換
+    return [(int(user['s_id']), {'xp': user['xp'], 'level': user['level']}) for user in sorted_users]
 
 
 # 取得

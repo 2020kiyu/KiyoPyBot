@@ -34,10 +34,10 @@ async def on_ready(bot):
     # ユーザーデータに基づいてロールを付け替え
     for channel in [BOT_CHANNEL, BOT_CHANNEL2]:
         guild = channel.guild
-        user_dict = await db.get_all_users(guild.id)
+        users = await db.get_all_users(guild.id)
         # ロール「レベル0」を準備
         await level.get_roles(guild, "レベル0")
-        for user_id, data in user_dict.items():
+        for (user_id, data) in users:
             member = guild.get_member(int(user_id))
             next_level_name = f"レベル{data['level']}"
             await level.add_roles(member, next_level_name)
