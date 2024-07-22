@@ -8,6 +8,14 @@ from app.sub import db_operations as db
 #############################
 # 処理
 #############################
+# botの準備完了時
+async def on_ready(bot, bot_channel):
+    # 初期化
+    global BOT
+    global BOT_CHANNEL
+    BOT= bot
+    BOT_CHANNEL = bot_channel
+
 # 現在のXPとレベルを表示する
 async def stats(ctx):
     user_id = ctx.author.id
