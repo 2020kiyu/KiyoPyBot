@@ -38,7 +38,7 @@ async def on_ready(bot):
         # ロール「レベル0」を準備
         await level.get_role(guild, "レベル0")
         for (user_id, data) in users:
-            member = await guild.fetch_member(int(user_id))
+            member = await guild.get_member(int(user_id))
             next_level_name = f"レベル{data['level']}"
             await level.add_role(member, next_level_name)
 
