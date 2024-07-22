@@ -52,7 +52,7 @@ async def update_user_data(s_id, user_id, xp, level):
     user_id = str(user_id)
     xp = int(float(xp))
     level = int(float(level))
-    response = supabase.table('USER_DATA').update({'xp': xp, 'level': level}).eq('s_id', s_id).eq('id', user_id).execute()
+    response = supabase.table('USER_DATA').update({'xp': xp, 'level': level}).eq('s_id', s_id).eq('u_id', user_id).execute()
     return response.data
 
 
