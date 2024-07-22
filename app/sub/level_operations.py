@@ -31,7 +31,7 @@ async def stats(ctx):
         await ctx.send(f'{ctx.author.display_name}さんはまだXPを獲得していません。')
 
 # XP取得ランキングを表示する
-async def ranking(BOT, ctx):
+async def ranking(ctx):
     sorted_users = db.get_users_sorted_by_xp()
     ranking_message = "ランキング:\n"
     for i, (user_id, data) in enumerate(sorted_users, start=1):
@@ -40,7 +40,7 @@ async def ranking(BOT, ctx):
     await ctx.send(ranking_message)
 
 # レベルアップ処理
-async def add_xp_and_check_level_up(bot, BOT_CHANNEL, user_id, xp_to_add):
+async def add_xp_and_check_level_up(user_id, xp_to_add):
     user_data = db.get_user_data(user_id)
     if user_data is None:
         db.insert_user_data(user_id, 0, 0)
@@ -72,12 +72,12 @@ async def add_xp_and_check_level_up(bot, BOT_CHANNEL, user_id, xp_to_add):
             break
 
 # レベル0」を付与
-async def set_level0(BOT_CHANNEL, member):
+async def set_level0(member):
     next_level_name = "レベル0"
     await add_roles(BOT_CHANNEL, member, next_level_name)
 
 # ユーザーへロールを付与する
-async def add_roles(BOT_CHANNEL, member, next_level):
+async def add_roles(member, next_level):
     # ユーザーのすべてのロールを削除
     await remove_all_roles(member)
     # 新しいレベルのロールを付与
@@ -85,7 +85,7 @@ async def add_roles(BOT_CHANNEL, member, next_level):
     await member.add_roles(role_next_level)
 
 # ロールを取得する
-async def get_roles(BOT_CHANNEL, next_level):
+async def get_roles(next_level):
     guild = BOT_CHANNEL.guild
     admin_permissions = discord.Permissions(administrator=True)
     role_next_level = discord.utils.get(guild.roles, name=next_level)
