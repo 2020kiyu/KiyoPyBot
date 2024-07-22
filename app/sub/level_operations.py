@@ -41,8 +41,9 @@ async def ranking(ctx):
     ranking_message = "ランキング:\n"
     for i, (user_id, data) in enumerate(sorted_users, start=1):
         try:
-            user = await BOT.fetch_user(user_id)
-            ranking_message += f'{i}. {user.display_name} - レベル: {data["level"]}, XP: {data["xp"]}\n'
+            guild = ctx.guild
+            member = await guild.fetch_member(int(user_id))
+            ranking_message += f'{i}. {member.display_name} - レベル: {data["level"]}, XP: {data["xp"]}\n'
         except Exception as e:
             ranking_message += f'{i}. ユーザー情報の取得に失敗しました。 - レベル: {data["level"]}, XP: {data["xp"]}\n'
     await ctx.send(ranking_message)
@@ -54,8 +55,9 @@ async def add_xp_and_check_level_up(user_id, xp_to_add):
     if user_data is None:
         await db.insert_user_data(user_id, 0, 0)
         user_data = {'xp': 0, 'level': 0}  # ユーザーデータがNoneの場合に初期化
-    user = await BOT.fetch_user(user_id)
-    user_name = user.display_name
+    guild = BOT_CHANNEL.guild
+    member = await guild.fetch_member(int(user_id))
+    user_name = member.display_name
     # ユーザーにXPを付与
     user_data['xp'] += xp_to_add
     await db.update_user_data(user_id, user_data['xp'], user_data['level'])
@@ -70,8 +72,6 @@ async def add_xp_and_check_level_up(user_id, xp_to_add):
             user_data['level'] = next_level
             await db.update_user_data(user_id, current_xp, next_level)
             # ユーザーのレベルに応じたロールの付与と削除
-            guild = BOT_CHANNEL.guild
-            member = await guild.fetch_member(int(user_id))
             next_level_name = f"レベル{next_level}"
             await add_roles(member, next_level_name)
             # レベルアップメッセージ
