@@ -88,7 +88,8 @@ async def add_role(member, next_level):
     # ユーザーのすべてのロールを削除
     await remove_all_roles(member)
     # 新しいレベルのロールを付与
-    role_next_level = await get_role(member.guild, next_level)
+    guild = member.guild
+    role_next_level = await get_role(guild, next_level)
     await member.add_roles(role_next_level)
 
 

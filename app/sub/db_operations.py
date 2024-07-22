@@ -25,7 +25,7 @@ async def get_all_users(s_id):
     response = supabase.table('USER_DATA').select('*').eq('s_id', s_id).execute()
     sorted_users = response.data  # データをusers変数に格納
     # タプルのリストに変換
-    return [(int(user['s_id']), {'xp': user['xp'], 'level': user['level']}) for user in sorted_users]
+    return [(int(user['u_id']), {'xp': user['xp'], 'level': user['level']}) for user in sorted_users]
 
 
 # 取得
