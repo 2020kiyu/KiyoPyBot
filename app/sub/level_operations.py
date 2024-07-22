@@ -21,7 +21,7 @@ async def on_ready(bot, bot_channel):
 # 現在のXPとレベルを表示する
 async def stats(ctx):
     user_id = ctx.author.id
-    user_data = db.get_user_data(user_id)
+    user_data = await db.get_user_data(user_id)
     if user_data:
         xp = user_data['xp']
         level = user_data['level']
