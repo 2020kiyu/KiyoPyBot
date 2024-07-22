@@ -37,7 +37,6 @@ async def get_user_data(s_id, user_id):
     if not user_list:
         return None  # ユーザーが存在しない場合
     user = user_list[0]  # リストの最初の要素を取得
-    # u_id をキーにして XP と LEVEL を持つ辞書を作成
     user_data = {'xp': user['xp'], 'level': user['level']}
     return user_data
 
@@ -68,4 +67,4 @@ async def get_users_sorted_by_xp(s_id):
     response = supabase.table('USER_DATA').select('*').eq('s_id', s_id).order('xp', desc=True).execute()
     sorted_users = response.data  # データをusers変数に格納
     # タプルのリストに変換
-    return [(int(user['s_id']), {'xp': user['xp'], 'level': user['level']}) for user in sorted_users]
+    return [(int(user['u_id']), {'xp': user['xp'], 'level': user['level']}) for user in sorted_users]
