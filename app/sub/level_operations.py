@@ -65,7 +65,7 @@ async def add_xp_and_check_level_up(user_id, xp_to_add):
             member = guild.get_member(user_id)
             if member:
                 next_level_name = f"レベル{next_level}"
-                await add_roles(BOT_CHANNEL, member, next_level_name)
+                await add_roles(member, next_level_name)
                 # レベルアップメッセージ
                 await BOT_CHANNEL.send(f'{user_name}さん、レベル{next_level}にアップしました！')
         else:
@@ -74,14 +74,14 @@ async def add_xp_and_check_level_up(user_id, xp_to_add):
 # レベル0」を付与
 async def set_level0(member):
     next_level_name = "レベル0"
-    await add_roles(BOT_CHANNEL, member, next_level_name)
+    await add_roles(member, next_level_name)
 
 # ユーザーへロールを付与する
 async def add_roles(member, next_level):
     # ユーザーのすべてのロールを削除
     await remove_all_roles(member)
     # 新しいレベルのロールを付与
-    role_next_level = await get_roles(BOT_CHANNEL, next_level)
+    role_next_level = await get_roles(next_level)
     await member.add_roles(role_next_level)
 
 # ロールを取得する
