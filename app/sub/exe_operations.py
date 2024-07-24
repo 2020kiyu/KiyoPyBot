@@ -31,6 +31,14 @@ async def on_ready(bot):
     BOT = bot
     BOT_CHANNEL = bot.get_channel(BOT_CHANNEL_ID)
     BOT_CHANNEL2 = bot.get_channel(BOT_CHANNEL2_ID)
+    # チャンネルが正しく取得できているか確認
+    if BOT_CHANNEL is None:
+        print("チャンネルが見つかりません。BOT_CHANNEL_IDが正しいか確認してください。")
+        return
+    # チャンネルが正しく取得できているか確認
+    if BOT_CHANNEL2 is None:
+        print("チャンネルが見つかりません。BOT_CHANNEL2_IDが正しいか確認してください。")
+        return
     # ユーザーデータに基づいてロールを付け替え
     for channel in [BOT_CHANNEL, BOT_CHANNEL2]:
         guild = channel.guild
