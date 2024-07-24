@@ -17,6 +17,7 @@ async def play(ctx):
         vc = await channel.connect()
     else:
         vc = ctx.voice_client
+    # ループ再生
     for i in range(11):
         # 音楽を再生
         audio_source = discord.FFmpegPCMAudio(source="./music/loop_music.mp3")
