@@ -27,6 +27,7 @@ async def play(ctx):
             await asyncio.sleep(1)
         # 再生終了後にボイスチャンネルから切断
     await vc.disconnect()
+    await ctx.send("再生終了につき、ボイスチャンネルから切断しました。")
 
 
 # 音楽停止
