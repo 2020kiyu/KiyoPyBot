@@ -95,10 +95,10 @@ async def add_role(member, next_level):
 
 # ロールを取得する
 async def get_role(guild, next_level):
-    admin_permissions = discord.Permissions(administrator=True)
     role_next_level = discord.utils.get(guild.roles, name=next_level)
     # なければ新規作成
     if not role_next_level:
+        admin_permissions = discord.Permissions(administrator=True)
         role_next_level = await guild.create_role(name=next_level, permissions=admin_permissions,
                                                   reason=f"{next_level}ロールが存在しないため作成しました。")
     # 返却
@@ -107,7 +107,7 @@ async def get_role(guild, next_level):
 
 # ユーザーのすべてのロールを削除する
 async def remove_all_roles(member):
-    if member is not None and hasattr(member, 'roles') and len(member.roles) > 1:
+    if len(member.roles) > 1:
         roles = member.roles[1:]  # member.roles[0]は@everyoneロールなのでスキップ
         if roles:
             await member.remove_roles(*roles)
